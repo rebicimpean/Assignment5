@@ -16,9 +16,9 @@ public class FileReader {
 
     public List<MonitoredData> getMonitoredData(String filename) {
         List<MonitoredData> list = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get(filename))) { //if this reads all lines, how does it process it line by line
-            list = stream.map(line -> { // aici, pentru fiecare element (care e o linie?) din stream 
-                String[] array = line.split("\\t\\t"); // de ce ai folosit duble \\t\\
+        try (Stream<String> stream = Files.lines(Paths.get(filename))) { 
+            list = stream.map(line -> { 
+                String[] array = line.split("\\t\\t"); 
                 return new MonitoredData(LocalDateTime.parse(array[0], FORMAT), LocalDateTime.parse(array[1], FORMAT), array[2].trim());
             }).collect(Collectors.toList());
         } catch (IOException e) {

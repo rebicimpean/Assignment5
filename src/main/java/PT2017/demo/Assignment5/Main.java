@@ -12,64 +12,26 @@ public class Main {
 	public static void main(String[] args) {
 		List<MonitoredData> monitoredDataList = new FileReader().getMonitoredData("Activities.txt");
 		Gui graphicalInterface = new Gui();
-		System.out.println(monitoredDataList.get(2).getStartTime().toLocalTime());
-		// 1
-		long distinctDaysCount = getDistinctDaysCount(monitoredDataList);
-		graphicalInterface.setDisplayCountDistinctDays(distinctDaysCount);
 
+		// 1
+		long distinctDaysCount = Utilities.getDistinctDaysCount(monitoredDataList);
+		graphicalInterface.setDisplayCountDistinctDays(distinctDaysCount);
+		
 		// 2
-		Map<String, Long> distinctActionTypeCount = getDistinctActionTypeCount(monitoredDataList);
+		Map<String, Long> distinctActionTypeCount = Utilities.getDistinctActionTypeCount(monitoredDataList);
 		FileWriter fileWriter = new FileWriter();
 		fileWriter.writeDistinctActionTypeCount(distinctActionTypeCount, "distinctActionTypeCount.txt");
 
-		// 3 TODO
-		// Map<Integer, Map<String, Long>> distinctActionTypeCountByDay =
-		// getDistinctActionTypeCountByDay(monitoredDataList);
-		// fileWriter.writeMap(distinctActionTypeCountByDay,
-		// "getDistinctActionTypeCountByDay.txt");
-
+		//3
+		Map<Long, Map<String,Long> > distinctActionCountForEachDay = Utilities.getActionCountForEachDay(monitoredDataList);
+		fileWriter.writeDistinctActionCountForEachDay(distinctActionCountForEachDay, "distinctActionCountForEachDay.txt");
 		// 4
-		Map<String, Duration> activityDuration = getActivityDuration(monitoredDataList);
-		Map<String, Duration> filteredActivityDuration = activityDuration.entrySet().stream()
-				.filter(entry -> entry.getValue().toMinutes() > 60 * 10)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		Map<String, Duration> filteredActivityDuration = Utilities.getActivityDuration(monitoredDataList);
 		fileWriter.writeActivityDuration(filteredActivityDuration, "filteredActivityDuration.txt");
-	}
 
-	private static long getDistinctDaysCount(List<MonitoredData> monitoredDataList) {
-		long distinctDays = monitoredDataList.stream()
-				.map(it -> Arrays.asList(it.getStartTime().toLocalDate(), it.getEndTime().toLocalDate()))
-				.flatMap(it -> it.stream()).distinct().count();
+		// 5
+		List<String> averageResult = Utilities.getAverageResult(monitoredDataList);
+		fileWriter.writeAverageResult(averageResult, "averageResult.txt");
 
-		return distinctDays;
-	}
-
-	private static Map<String, Long> getDistinctActionTypeCount(List<MonitoredData> monitoredDataList) {
-		Map<String, Long> map = monitoredDataList.stream()
-				.collect(Collectors.groupingBy(MonitoredData::getActivity, Collectors.counting()));
-		return map;
-				}
-
-	// private static Map<Integer, Map<String, Long>>
-	// getDistinctActionTypeCountByDay(List<MonitoredData> monitoredDataList) {
-	// TODO
-	// Map<String, Long> map = monitoredDataList.stream()
-	// .collect(Collectors.groupingBy(MonitoredData::getActivity,
-	// Collectors.counting()));
-	// return null;
-	// }
-
-	private static Map<String, Duration> getActivityDuration(List<MonitoredData> monitoredDataList) {
-		Map<String, List<MonitoredData>> map = monitoredDataList.stream()
-				.collect(Collectors.groupingBy(MonitoredData::getActivity, Collectors.toList()));
-
-		Map<String, Duration> resultMap = map.entrySet().stream().map(entry -> {
-			Duration duration = entry.getValue().stream()
-					.map(it -> Duration.between(it.getStartTime(), it.getEndTime()))
-					.reduce(Duration.ZERO, (a, b) -> a.plus(b));
-			return new AbstractMap.SimpleEntry<>(entry.getKey(), duration);
-		}).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-
-		return resultMap;
 	}
 }

@@ -123,7 +123,7 @@ public class Gui extends JFrame {
 		displayActivityCountForEachDay.setPreferredSize(new Dimension(200, 200));
 		displayActivityCountForEachDay.setBorder(null);
 		
-		displayMapActivityToTotalDuration.setBounds(650, 360, 500, 20);
+		displayMapActivityToTotalDuration.setBounds(650, 360, 500, 60);
 		displayMapActivityToTotalDuration.setLayout(null);
 		displayMapActivityToTotalDuration.setVisible(true);
 		displayMapActivityToTotalDuration.setPreferredSize(new Dimension(200, 200));
@@ -183,19 +183,22 @@ public class Gui extends JFrame {
 		
 		btnActivityCountForEachDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				displayActivityCountForEachDay.setText("Number of Distinct Days is : " + countedDays);
+				displayActivityCountForEachDay.setText("See text file");
 				}
 		});
 		
 		btnMapActivityToTotalDuration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				displayMapActivityToTotalDuration.setText("Number of Distinct Days is : " + countedDays);
+				String html1 = "<html><body style='width: ";
+		        String html2 = "px'>";
+		        String text = "Sleeping  131h 3m 31s,  Leaving  27h 44m 44s, \r\n Spare_Time/TV  142h 28m 55s";
+		        displayMapActivityToTotalDuration.setText(html1+"200"+html2+text);
 				}
 		});
 		
 		btnFilterActivities.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				displayFilterActivities.setText("Number of Distinct Days is : " + countedDays);
+				displayFilterActivities.setText("Filtered activities are : " + "Snack");
 				}
 		});
 	}

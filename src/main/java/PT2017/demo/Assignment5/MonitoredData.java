@@ -1,5 +1,6 @@
 package PT2017.demo.Assignment5;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MonitoredData {
@@ -14,10 +15,15 @@ public class MonitoredData {
         this.setActivity(activityLabel);
     }
 
+    public long getDay()
+    {
+    	return startTime.toLocalDate().getDayOfMonth();
+    }
+    
     public LocalDateTime getStartTime() {
         return startTime;
     }
-
+                        
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
