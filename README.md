@@ -1,5 +1,7 @@
 # Assignment5
 Learn Lambda Expressions
+
+
 A smart house features a set of sensors that may be used to record the behavior of a person living in the
 house. The historical log of the person’s activity is stored as tuples (startTime, endTime, activityLabel),
 where startTime and endTime represent the date and time when each activity has started and ended while
